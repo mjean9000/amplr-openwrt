@@ -21,7 +21,7 @@ define Package/uqmi
 	CATEGORY:=Network
 	SUBMENU:=WWAN
 	DEPENDS:=+libubox +libblobmsg-json +kmod-usb-net +kmod-usb-net-qmi-wwan +wwan
-	TITLE:=Control utility for mobile broadband modems, mod by mrhaav and adapted by Maarten for amplr
+	TITLE:=Control utility for mobile broadband modems, amplr version
 endef
 
 define Package/uqmi/description
