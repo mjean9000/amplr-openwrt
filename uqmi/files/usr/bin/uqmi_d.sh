@@ -33,11 +33,11 @@ do
 # Check wwan connectivity
 	if [ -n "$pdh_4" ]
 	then
-		ipv4connected="$(uqmi -t 1000 -s -d $device --set-client-id wds,$cid_4 --get-current-settings)"
+		ipv4connected="$(uqmi -s -d $device --set-client-id wds,$cid_4 --get-current-settings)"
 	fi
 	if [ -n "$pdh_6" ]
 	then
-		ipv6connected="$(uqmi -t 1000 -s -d $device --set-client-id wds,$cid_6 --get-current-settings)"
+		ipv6connected="$(uqmi -s -d $device --set-client-id wds,$cid_6 --get-current-settings)"
 	fi
 
 	if [ "$ipv4connected" = '"Out of call"' ] || [ "$ipv6connected" = '"Out of call"' ]
@@ -49,12 +49,12 @@ do
 # IPv4
 		if [ -n "$pdh_4" ]
 		then
-			uqmi -t 1000 -s -d $device --set-client-id wds,"$cid_4" \
+			uqmi -s -d $device --set-client-id wds,"$cid_4" \
 				--release-client-id wds
 
-			cid_4=$(uqmi -t 1000 -s -d $device --get-client-id wds)
-			uqmi -t 1000 -s -d "$device" --set-client-id wds,"$cid_4" --set-ip-family ipv4
-			pdh_4=$(uqmi -t 1000 -s -d $device --set-client-id wds,"$cid_4" \
+			cid_4=$(uqmi -s -d $device --get-client-id wds)
+			uqmi -s -d "$device" --set-client-id wds,"$cid_4" --set-ip-family ipv4
+			pdh_4=$(uqmi -s -d $device --set-client-id wds,"$cid_4" \
 				--start-network \
 				--profile $default_profile)
 			if [ "$pdh_4" = '"Call failed"' ]
@@ -74,7 +74,7 @@ do
 			proto_close_data
 			proto_send_update "$interface"
 	
-			json_load "$(uqmi -t 1000 -s -d $device --set-client-id wds,$cid_4 --get-current-settings)"
+			json_load "$(uqmi -s -d $device --set-client-id wds,$cid_4 --get-current-settings)"
 			json_select ipv4
 			json_get_var ip_4 ip
 			json_get_var gateway_4 gateway
@@ -97,22 +97,22 @@ do
 # IPv6
 		if [ -n "$pdh_6" ]
 		then
-			uqmi -t 1000 -s -d $device --set-client-id wds,"$cid_6" \
+			uqmi -s -d $device --set-client-id wds,"$cid_6" \
 				--release-client-id wds
 
-			cid_6=$(uqmi -t 1000 -s -d $device --get-client-id wds)
-			uqmi -t 1000 -s -d "$device" --set-client-id wds,"$cid_6" --set-ip-family ipv6
+			cid_6=$(uqmi -s -d $device --get-client-id wds)
+			uqmi -s -d "$device" --set-client-id wds,"$cid_6" --set-ip-family ipv6
 			if [ -n "$pdh_4" ] && [ -n "$pdh_6" ]
 			then
-				pdh_6=$(uqmi -t 1000 -s -d $device --set-client-id wds,"$cid_6" \
+				pdh_6=$(uqmi -s -d $device --set-client-id wds,"$cid_6" \
 					--start-network)
 			elif [ -n "$ipv6profile" ]
 			then
-				pdh_6=$(uqmi -t 1000 -s -d $device --set-client-id wds,"$cid_6" \
+				pdh_6=$(uqmi -s -d $device --set-client-id wds,"$cid_6" \
 					--start-network \
 					--profile $ipv6profile)
 			else
-				pdh_6=$(uqmi -t 1000 -s -d $device --set-client-id wds,"$cid_6" \
+				pdh_6=$(uqmi -s -d $device --set-client-id wds,"$cid_6" \
 					--start-network \
 					--profile $default_profile)
 			fi
@@ -133,7 +133,7 @@ do
 			proto_close_data
 			proto_send_update "$interface"
 
-			json_load "$(uqmi -t 1000 -s -d $device --set-client-id wds,$cid_6 --get-current-settings)"
+			json_load "$(uqmi -s -d $device --set-client-id wds,$cid_6 --get-current-settings)"
 			json_select ipv6
 			json_get_var ip_6 ip
 			json_get_var gateway_6 gateway
